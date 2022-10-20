@@ -1,4 +1,4 @@
-export interface SearchViewProps {
+export interface BookListProps {
   loading?: boolean;
   loadingMore?: boolean;
   error?: boolean;
@@ -7,7 +7,7 @@ export interface SearchViewProps {
   data: IBookCard[];
   handleCardSelection: (bookCard: IBookCard) => void;
   handleListEndReached: () => void;
-  handleSearchTextChange: (searchText: string) => void;
+  handleSearchTextChange?: (searchText: string) => void;
 }
 
 export interface IBookCard {

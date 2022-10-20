@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {FlatList, View, Image} from 'react-native';
-import {IBookCard, SearchViewProps} from './types';
+import {IBookCard, BookListProps} from './types';
 import {
   Card,
   CardTitle,
@@ -11,7 +11,7 @@ import {
   ErrorOrEmptyMessage,
 } from './styles';
 
-export const SearchView = ({
+export const BookList = ({
   loading,
   loadingMore,
   error,
@@ -21,17 +21,22 @@ export const SearchView = ({
   handleCardSelection,
   handleSearchTextChange,
   handleListEndReached,
-}: SearchViewProps): JSX.Element => {
+}: BookListProps): JSX.Element => {
   const RenderItem = useCallback(
     (item: IBookCard) => {
+      console.log(item.uri);
       return (
         <Card onPress={() => handleCardSelection(item)}>
           <Image
             source={{
-              uri: item.uri || 'https://via.placeholder.com/150',
+              uri:
+                item.uri.replace('http', 'https') ||
+                'https://via.placeholder.com/150',
               height: 150,
               width: 100,
             }}
+            style={{height: 150, width: 150}}
+            resizeMode={'cover'}
           />
           <View>
             <CardTitle>{item.title}</CardTitle>
@@ -64,17 +69,20 @@ export const SearchView = ({
 
   return (
     <Container>
-      <SearchInput
-        placeholder="Pesquisar por livro"
-        onChangeText={handleSearchTextChange}
-        value={searchText}
-      />
+      {handleSearchTextChange && (
+        <SearchInput
+          placeholder="Pesquisar por livro"
+          onChangeText={handleSearchTextChange}
+          value={searchText}
+        />
+      )}
+
       {loading && <StyledActivityIndicator />}
       {error && <ErrorOrEmptyMessage>{errorMessage || ''}</ErrorOrEmptyMessage>}
 
       <FlatList
         // eslint-disable-next-line react-native/no-inline-styles
-        contentContainerStyle={{paddingBottom: 200}}
+        contentContainerStyle={{paddingTop: 16, paddingBottom: 200}}
         data={data}
         renderItem={({item}) => RenderItem(item)}
         ListEmptyComponent={RenderEmptyList}

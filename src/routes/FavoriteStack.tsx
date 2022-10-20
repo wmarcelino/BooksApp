@@ -1,17 +1,17 @@
 import React from 'react';
 
 import {createStackNavigator} from '@react-navigation/stack';
-import {SearchViewModel} from '../../screens/Search/SearchViewModel';
-import {BookDetailedViewModel} from '../../screens/BookDetailed/BookDetailedViewModel';
+import {BookDetailedViewModel} from '../screens/BookDetailed/BookDetailedViewModel';
+import {FavoritesViewModel} from '../screens/Favorites/FavoritesViewModel';
 
 const Stack = createStackNavigator();
 
-export const SearchStack = (): JSX.Element => {
+export const FavoriteStack = (): JSX.Element => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Buscar"
-        component={SearchViewModel}
+        name="Favoritos"
+        component={FavoritesViewModel}
         options={{headerShown: false}}
       />
       <Stack.Screen

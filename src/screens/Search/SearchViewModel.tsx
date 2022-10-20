@@ -1,14 +1,14 @@
 import React, {useEffect, useRef} from 'react';
 import {useCallback, useState} from 'react';
 import {useDebounce} from 'use-debounce';
-import {searchBook} from '../../api/books/repositories/SearchBook/index';
-import {SearchView} from './SearchView';
-import {IBookCard} from './types';
+import {search} from '../../api/books/repositories/Books/index';
+import {BookList} from '../BookList';
+import {IBookCard} from '../BookList/types';
 
 const MAX_RESULTS = 5;
 
-//TODO: Tipagem correta
-export const SearchViewModel = ({navigation: {navigate}}): JSX.Element => {
+//TODO: Tipagem correta da navegacao
+export const SearchViewModel = ({navigation: {navigate}}: any): JSX.Element => {
   const [searchText, setSearchText] = useState('');
   const [searchTextDebounced] = useDebounce(searchText, 1000);
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export const SearchViewModel = ({navigation: {navigate}}): JSX.Element => {
       fetchingMore: boolean,
     ) => {
       fetchingMore ? setLoadingMore(true) : setLoading(true);
-      searchBook(text, index, maxResults)
+      search(text, index, maxResults)
         .then(data => {
           const newBooks = data.items?.map(item => ({
             id: item.id || '',
@@ -78,7 +78,7 @@ export const SearchViewModel = ({navigation: {navigate}}): JSX.Element => {
   );
 
   return (
-    <SearchView
+    <BookList
       loading={loading}
       error={error}
       searchText={searchText}

@@ -1,12 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
 import {useState} from 'react';
-import {getBookById} from '../../api/books/repositories/SearchBook';
+import {getById, favorite} from '../../api/books/repositories/Books';
 import {BookDetailedView} from './BookDetailedView';
 import {IBookInfo} from './types';
 
-//TODO: Tipagem correta
-export const BookDetailedViewModel = ({route, navigation}): JSX.Element => {
+//TODO: Tipagem de route
+export const BookDetailedViewModel = ({route}: any): JSX.Element => {
   const [loading, setLoading] = useState(true);
+  const [addingToFavorite, setAddingToFavorite] = useState(false);
   const [data, setData] = useState<IBookInfo>({
     title: '',
     author: '',
@@ -19,8 +20,8 @@ export const BookDetailedViewModel = ({route, navigation}): JSX.Element => {
 
   console.log('id' + JSON.stringify(route.params.id));
 
-  const getBookDetail = useCallback(async (id: string) => {
-    getBookById(id)
+  const getBookDetail = useCallback((id: string) => {
+    getById(id)
       .then(book => {
         console.log('book' + JSON.stringify(book));
         setData({
@@ -29,18 +30,36 @@ export const BookDetailedViewModel = ({route, navigation}): JSX.Element => {
           author: book.volumeInfo?.authors ? book.volumeInfo?.authors[0] : '',
           publisher: book.volumeInfo?.publisher || '',
           description: book.volumeInfo?.description || '',
-          uri: book.volumeInfo?.imageLinks?.large || '',
+          uri: book.volumeInfo?.imageLinks?.thumbnail || '',
         });
       })
       .catch(() => setError('Ops, algo deu errado.'))
       .finally(() => setLoading(false));
   }, []);
 
+  const handleFavoriteButton = useCallback(() => {
+    setAddingToFavorite(true);
+    favorite(route?.params?.id)
+      .then(status => {
+        console.log('status' + status);
+      })
+      .catch(favoriteError => console.log(favoriteError))
+      .finally(() => {
+        setAddingToFavorite(false);
+      });
+  }, [route?.params?.id]);
+
   useEffect(() => {
     getBookDetail(route?.params?.id);
   }, [getBookDetail, route?.params?.id]);
 
   return (
-    <BookDetailedView loading={loading} errorMessage={error} bookInfo={data} />
+    <BookDetailedView
+      loading={loading}
+      errorMessage={error}
+      bookInfo={data}
+      addingToFavorite={addingToFavorite}
+      handleFavoriteButton={handleFavoriteButton}
+    />
   );
 };

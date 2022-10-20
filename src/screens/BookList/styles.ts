@@ -36,6 +36,7 @@ export const SearchInput = styled.TextInput.attrs({
   placeholderTextColor: '#000c66',
 })`
   font-size: 16px;
+  padding: 8px;
   color: #000c66;
   background-color: #fff;
   border-radius: 8px;
