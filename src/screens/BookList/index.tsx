@@ -26,7 +26,7 @@ export const BookList = ({
     (item: IBookCard) => {
       console.log(item.uri);
       return (
-        <Card onPress={() => handleCardSelection(item)}>
+        <Card testID="book-list-card" onPress={() => handleCardSelection(item)}>
           <Image
             source={{
               uri:
@@ -50,7 +50,7 @@ export const BookList = ({
 
   const RenderEmptyList = useCallback(() => {
     return (
-      <View>
+      <View testID="book-list-empty">
         <ErrorOrEmptyMessage>
           {searchText.length > 0 && !loading
             ? 'Ops, não foram encontrados resultados'
@@ -68,7 +68,7 @@ export const BookList = ({
   }, [loadingMore]);
 
   return (
-    <Container>
+    <Container testID="book-list">
       {handleSearchTextChange && (
         <SearchInput
           placeholder="Pesquisar por livro"
@@ -77,10 +77,15 @@ export const BookList = ({
         />
       )}
 
-      {loading && <StyledActivityIndicator />}
-      {error && <ErrorOrEmptyMessage>{errorMessage || ''}</ErrorOrEmptyMessage>}
+      {loading && <StyledActivityIndicator testID="book-list-loading" />}
+      {error && (
+        <ErrorOrEmptyMessage testID="book-list-error-or-empty">
+          {errorMessage || ''}
+        </ErrorOrEmptyMessage>
+      )}
 
       <FlatList
+        testID="book-list-content-data"
         // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{paddingTop: 16, paddingBottom: 200}}
         data={data}

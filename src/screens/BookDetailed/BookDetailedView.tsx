@@ -29,21 +29,22 @@ export const BookDetailedView = ({
   }
 
   if (loading) {
-    return <StyledActivityIndicator />;
+    return <StyledActivityIndicator testID="book-detailed-loading" />;
   }
+
   return (
     <Container contentContainerStyle={{paddingBottom: 100}}>
       <StyledImage
         source={{
           uri:
-            bookInfo.uri.replace('http', 'https') ||
+            bookInfo?.uri.replace('http', 'https') ||
             'https://via.placeholder.com/150',
           height: 300,
           width: 250,
         }}
       />
-      <Title>{bookInfo.title}</Title>
-      <BookAtributte>{bookInfo.subtitle}</BookAtributte>
+      <Title>{bookInfo?.title}</Title>
+      <BookAtributte>{bookInfo?.subtitle}</BookAtributte>
 
       <Button
         title="Adicionar aos favoritos"
@@ -52,7 +53,10 @@ export const BookDetailedView = ({
       />
 
       {addingToFavorite && <ActivityIndicator />}
-      <RenderHTML contentWidth={width} source={{html: bookInfo.description}} />
+      <RenderHTML
+        contentWidth={width}
+        source={{html: bookInfo?.description || ''}}
+      />
     </Container>
   );
 };

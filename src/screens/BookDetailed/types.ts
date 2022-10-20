@@ -1,7 +1,7 @@
 export interface BookDetailedViewProps {
   loading?: boolean;
   errorMessage?: string;
-  bookInfo: IBookInfo;
+  bookInfo?: IBookInfo;
   handleFavoriteButton: () => void;
   addingToFavorite: boolean;
 }

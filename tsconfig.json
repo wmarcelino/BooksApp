@@ -7,7 +7,12 @@
     /* Completeness */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "types": [
-      "@types/styled-components-react-native"
-    ]
-  }
+      "@types/styled-components-react-native",
+      "@types/jest"
+    ],
+  },
+  "exclude": [
+    "*.test.ts",
+    "**/*.spec.ts"
+  ]
 }
